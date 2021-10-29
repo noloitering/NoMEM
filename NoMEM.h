@@ -29,7 +29,6 @@ namespace NoMEM
 	
 	typedef std::tuple< FontMap, TextureMap, AnimMap, SpriteMap > Assets;
 
-	// TODO: template out the logic by putting the maps inside a tuple
 	class MEMManager
 	{
 	private:
