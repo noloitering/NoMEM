@@ -36,6 +36,18 @@ namespace NoMEM
 		Assets assets;
 	public:
 		MEMManager() {}
+		Assets getAll()
+		{
+			
+			return assets;
+		}
+		
+		template< class C >
+		std::unordered_map< std::string, std::shared_ptr< C > > getAll()
+		{
+			
+			return std::get< std::unordered_map< std::string, std::shared_ptr< C > > >(assets);
+		}
 		
 		template < class C >
 		std::shared_ptr< C > get(const std::string& name)
