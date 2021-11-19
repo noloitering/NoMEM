@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <memory>
 
 #include "raylib.h"
 
@@ -69,7 +70,9 @@ namespace NoMEM
 		std::shared_ptr< Anim > addAnimation(const std::string& name, Anim anim) 
 		{
 			std::shared_ptr< Anim > newAnim = std::make_shared< Anim >(anim);
-			get< Anim >(name) = newAnim;
+			AnimMap animMap = getAll< Anim >();
+			animMap[name] = newAnim;
+			assets = std::make_tuple(getAll< Font >(), getAll< Texture2D >(), animMap, getAll< Sprite >());
 			
 			
 			return newAnim;
@@ -80,7 +83,9 @@ namespace NoMEM
 			if ( FileExists(path.c_str()) )
 			{
 				std::shared_ptr< Font > newFont = std::make_shared< Font >(LoadFont(path.c_str()));
-				get< Font >(name) = newFont;
+				FontMap fontMap = getAll< Font >();
+				fontMap[name] = newFont;
+				assets = std::make_tuple(fontMap, getAll< Texture2D >(), getAll< Anim >(), getAll< Sprite >());
 				
 				return newFont;
 			}
@@ -97,7 +102,9 @@ namespace NoMEM
 			if ( FileExists(path.c_str()) )
 			{
 				std::shared_ptr< Texture2D > newTexture = std::make_shared< Texture2D >(LoadTexture(path.c_str()));
-				get< Texture >(name) = newTexture;
+				TextureMap textureMap = getAll< Texture2D >();
+				textureMap[name] = newTexture;
+				assets = std::make_tuple(getAll< Font >(), textureMap, getAll< Anim >(), getAll< Sprite >());
 				
 				return newTexture;
 			}
@@ -114,7 +121,9 @@ namespace NoMEM
 			if ( FileExists(path.c_str()) )
 			{
 				std::shared_ptr< Sprite > newSprite = std::make_shared< Sprite >((Sprite){LoadTexture(path.c_str()), frames});
-				get< Sprite >(name) = newSprite;
+				SpriteMap spriteMap = getAll< Sprite >();
+				spriteMap[name] = newSprite;
+				assets = std::make_tuple(getAll< Font >(), getAll< Texture2D >(), getAll< Anim >(), spriteMap);
 				
 				return newSprite;
 			}
