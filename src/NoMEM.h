@@ -101,18 +101,20 @@ namespace NoMEM
 	class MEMManager
 	{
 	private:
-		friend class GameEngine;
 		Assets assets;
 	public:
 		MEMManager() {}
-		
-		template <typename... Args>
-		MEMManager(Args&&... CArgs)
-		{
-			conf = Config(std::forward<Args>(CArgs)...);
-		}
+		MEMManager(const Assets& a)
+			: assets(a) {}
+		MEMManager(std::string confPath)
+			: conf(Config(confPath)) {}
+		MEMManager(std::string texturePath, std::string spritePath, std::string fontPath)
+			: conf(Config(texturePath, spritePath, fontPath)) {}	
+		MEMManager(const Assets& a, std::string texturePath, std::string spritePath, std::string fontPath)
+			: assets(a), conf(Config(texturePath, spritePath, fontPath)) {}
 		
 		Config conf;
+		
 		Assets getAll()
 		{
 			
