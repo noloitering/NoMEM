@@ -105,6 +105,7 @@ namespace NoMEM
 		Assets assets;
 	public:
 		MEMManager() {}
+		
 		template <typename... Args>
 		MEMManager(Args&&... CArgs)
 		{
@@ -167,7 +168,7 @@ namespace NoMEM
 			}
 			else
 			{
-				std::cerr << "could not load texture: " << path << std::endl;
+				std::cerr << "could not load font: " << path << std::endl;
 			}
 			
 			return nullptr;
