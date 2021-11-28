@@ -34,9 +34,12 @@ namespace NoMEM
 	private:
 		friend class MEMManager;
 		std::unordered_map< std::string, std::string > custom;
+		std::string wd;
 	public:
-		Config() {}
+		Config() 
+			: wd(std::string(GetWorkingDirectory())) {}
 		Config(std::string basePath)
+			: wd(std::string(GetWorkingDirectory()))
 		{
 			if ( basePath.back() != '/' )
 			{
@@ -46,7 +49,8 @@ namespace NoMEM
 			spriteDir = basePath + "textures/sprites/";
 			fontDir = basePath + "fonts/";
 		}
-		Config(std::string texturePath, std::string spritePath, std::string fontPath) 
+		Config(std::string texturePath, std::string spritePath, std::string fontPath)
+			: wd(std::string(GetWorkingDirectory()))
 		{
 			if ( texturePath.back() != '/' )
 			{
@@ -84,6 +88,17 @@ namespace NoMEM
 			
 			return custom.at(key);
 		}
+		
+		std::string cwd(const std::string& set="")
+		{
+			if ( !set.empty() )
+			{
+				wd = set;
+			}
+			
+			return wd;
+		}
+		
 		
 		std::unordered_map< std::string, std::string >::iterator find(const std::string& key)
 		{

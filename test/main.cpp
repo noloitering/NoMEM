@@ -34,6 +34,7 @@ int main(int argc, char ** argv)
 			DrawTexture(*(assets.get< Texture2D >("mainBack")), 0, 0, WHITE);
 		EndDrawing();
 	}
+	std::cout << assets.conf.cwd() << std::endl;
 	assets.clear();
 	
 	return 0;
