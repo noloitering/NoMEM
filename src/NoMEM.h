@@ -89,6 +89,12 @@ namespace NoMEM
 			return custom.at(key);
 		}
 		
+		std::unordered_map< std::string, std::string > get()
+		{
+			
+			return custom;
+		}
+		
 		std::string cwd(const std::string& set="")
 		{
 			if ( !set.empty() )
