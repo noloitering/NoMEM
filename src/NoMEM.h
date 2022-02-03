@@ -136,12 +136,16 @@ namespace NoMEM
 		MEMManager() {}
 		MEMManager(const Assets& a)
 			: assets(a) {}
+		MEMManager(const Assets& a, std::string texturePath, std::string spritePath, std::string fontPath, std::string audioPath)
+			: assets(a), conf(Config(texturePath, spritePath, fontPath, audioPath)) {}
+		MEMManager(const Assets& a, const Config& config)
+			: assets(a), conf(config) {}
+		MEMManager(const Config& config)
+			: conf(config) {}
 		MEMManager(std::string confPath)
 			: conf(Config(confPath)) {}
 		MEMManager(std::string texturePath, std::string spritePath, std::string fontPath, std::string audioPath)
 			: conf(Config(texturePath, spritePath, fontPath, audioPath)) {}
-		MEMManager(const Assets& a, std::string texturePath, std::string spritePath, std::string fontPath, std::string audioPath)
-			: assets(a), conf(Config(texturePath, spritePath, fontPath, audioPath)) {}
 		
 		Config conf;
 		
