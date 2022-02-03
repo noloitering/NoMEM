@@ -461,15 +461,14 @@ namespace NoMEM
 			return newMusic;
 		}
 		
-		// TODO: replace shared_ptrs with nullptr??
 		void clear()
 		{
-			FontMap fontMap = std::get< FontMap >(assets);
-			TextureMap textureMap = std::get< TextureMap >(assets);
-			AnimMap animMap = std::get< AnimMap >(assets);
-			SpriteMap spriteMap = std::get< SpriteMap >(assets);
-			SoundMap soundMap = std::get< SoundMap >(assets);
-			MusicMap musicMap = std::get< MusicMap >(assets);
+			FontMap& fontMap = std::get< FontMap >(assets);
+			TextureMap& textureMap = std::get< TextureMap >(assets);
+			AnimMap& animMap = std::get< AnimMap >(assets);
+			SpriteMap& spriteMap = std::get< SpriteMap >(assets);
+			SoundMap& soundMap = std::get< SoundMap >(assets);
+			MusicMap& musicMap = std::get< MusicMap >(assets);
 			
 			for (auto font : fontMap)
 			{
@@ -491,6 +490,11 @@ namespace NoMEM
 			{
 				UnloadMusicStream(*(music.second));
 			}
+			fontMap.clear();
+			textureMap.clear();
+			animMap.clear();
+			spriteMap.clear();
+			musicMap.clear();
 		}
 	};
 }
