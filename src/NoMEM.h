@@ -136,12 +136,16 @@ namespace NoMEM
 		MEMManager() {}
 		MEMManager(const Assets& a)
 			: assets(a) {}
+		MEMManager(const Assets& a, std::string texturePath, std::string spritePath, std::string fontPath, std::string audioPath)
+			: assets(a), conf(Config(texturePath, spritePath, fontPath, audioPath)) {}
+		MEMManager(const Assets& a, const Config& config)
+			: assets(a), conf(config) {}
+		MEMManager(const Config& config)
+			: conf(config) {}
 		MEMManager(std::string confPath)
 			: conf(Config(confPath)) {}
 		MEMManager(std::string texturePath, std::string spritePath, std::string fontPath, std::string audioPath)
 			: conf(Config(texturePath, spritePath, fontPath, audioPath)) {}
-		MEMManager(const Assets& a, std::string texturePath, std::string spritePath, std::string fontPath, std::string audioPath)
-			: assets(a), conf(Config(texturePath, spritePath, fontPath, audioPath)) {}
 		
 		Config conf;
 		
@@ -461,15 +465,14 @@ namespace NoMEM
 			return newMusic;
 		}
 		
-		// TODO: replace shared_ptrs with nullptr??
 		void clear()
 		{
-			FontMap fontMap = std::get< FontMap >(assets);
-			TextureMap textureMap = std::get< TextureMap >(assets);
-			AnimMap animMap = std::get< AnimMap >(assets);
-			SpriteMap spriteMap = std::get< SpriteMap >(assets);
-			SoundMap soundMap = std::get< SoundMap >(assets);
-			MusicMap musicMap = std::get< MusicMap >(assets);
+			FontMap& fontMap = std::get< FontMap >(assets);
+			TextureMap& textureMap = std::get< TextureMap >(assets);
+			AnimMap& animMap = std::get< AnimMap >(assets);
+			SpriteMap& spriteMap = std::get< SpriteMap >(assets);
+			SoundMap& soundMap = std::get< SoundMap >(assets);
+			MusicMap& musicMap = std::get< MusicMap >(assets);
 			
 			for (auto font : fontMap)
 			{
@@ -491,6 +494,11 @@ namespace NoMEM
 			{
 				UnloadMusicStream(*(music.second));
 			}
+			fontMap.clear();
+			textureMap.clear();
+			animMap.clear();
+			spriteMap.clear();
+			musicMap.clear();
 		}
 	};
 }
