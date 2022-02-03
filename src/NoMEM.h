@@ -50,9 +50,10 @@ namespace NoMEM
 			textureDir = basePath + "textures/";
 			spriteDir = basePath + "textures/sprites/";
 			fontDir = basePath + "fonts/";
-			audioDir = basePath + "audio/";
+			soundDir = basePath + "audio/sounds";
+			musicDir = basePath + "audio/music";
 		}
-		Config(std::string texturePath, std::string spritePath, std::string fontPath, std::string audioPath)
+		Config(std::string texturePath, std::string spritePath, std::string fontPath, std::string soundPath, std::string musicPath)
 			: wd(std::string(GetWorkingDirectory()))
 		{
 			if ( texturePath.back() != '/' )
@@ -67,19 +68,25 @@ namespace NoMEM
 			{
 				fontPath += "/";
 			}
-			if ( audioPath.back() != '/' )
+			if ( soundPath.back() != '/' )
 			{
-				fontPath += "/";
+				soundPath += "/";
+			}
+			if ( musicPath.back() != '/' )
+			{
+				musicPath += "/";
 			}
 			textureDir = texturePath;
 			spriteDir = spritePath;
 			fontDir = fontPath;
-			audioDir = audioPath;
+			soundDir = soundPath;
+			musicDir = musicPath;
 		}
 		std::string textureDir = "../assets/textures/";
 		std::string spriteDir = "../assets/textures/sprites/";
 		std::string fontDir = "../assets/fonts/";
-		std::string audioDir = "../assets/audio/";
+		std::string soundDir = "../assets/audio/sounds";
+		std::string musicDir = "../assets/audio/music";
 		
 		bool has(const std::string& key)
 		{
@@ -136,16 +143,16 @@ namespace NoMEM
 		MEMManager() {}
 		MEMManager(const Assets& a)
 			: assets(a) {}
-		MEMManager(const Assets& a, std::string texturePath, std::string spritePath, std::string fontPath, std::string audioPath)
-			: assets(a), conf(Config(texturePath, spritePath, fontPath, audioPath)) {}
+		MEMManager(const Assets& a, std::string texturePath, std::string spritePath, std::string fontPath, std::string soundPath, std::string musicPath)
+			: assets(a), conf(Config(texturePath, spritePath, fontPath, soundPath, musicPath)) {}
 		MEMManager(const Assets& a, const Config& config)
 			: assets(a), conf(config) {}
 		MEMManager(const Config& config)
 			: conf(config) {}
 		MEMManager(std::string confPath)
 			: conf(Config(confPath)) {}
-		MEMManager(std::string texturePath, std::string spritePath, std::string fontPath, std::string audioPath)
-			: conf(Config(texturePath, spritePath, fontPath, audioPath)) {}
+		MEMManager(std::string texturePath, std::string spritePath, std::string fontPath, std::string soundPath, std::string musicPath)
+			: conf(Config(texturePath, spritePath, fontPath, soundPath, musicPath)) {}
 		
 		Config conf;
 		
@@ -379,7 +386,7 @@ namespace NoMEM
 		
 		std::shared_ptr< Sound > addSound(const std::string& name)
 		{
-			std::string path = conf.audioDir + name;
+			std::string path = conf.soundDir + name;
 			// TODO: figure out what files to support
 			if ( FileExists(path.c_str()) )
 			{
@@ -433,7 +440,7 @@ namespace NoMEM
 		
 		std::shared_ptr< Music > addMusic(const std::string& name)
 		{
-			std::string path = conf.audioDir + name;
+			std::string path = conf.musicDir + name;
 			// TODO: figure out what files to support
 			if ( FileExists(path.c_str()) )
 			{
