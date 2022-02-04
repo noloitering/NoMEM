@@ -48,11 +48,11 @@ namespace NoMEM
 				basePath = basePath + "/";
 			}
 			wd = basePath;
-			textureDir = basePath + "textures/";
-			spriteDir = basePath + "textures/sprites/";
-			fontDir = basePath + "fonts/";
-			soundDir = basePath + "audio/sounds";
-			musicDir = basePath + "audio/music";
+			textureDir = "textures/";
+			spriteDir = "textures/sprites/";
+			fontDir = "fonts/";
+			soundDir = "audio/sounds";
+			musicDir = "audio/music";
 		}
 		
 		Config(std::string texturePath, std::string spritePath, std::string fontPath, std::string soundPath, std::string musicPath)
