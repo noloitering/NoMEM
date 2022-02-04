@@ -51,8 +51,8 @@ namespace NoMEM
 			textureDir = "textures/";
 			spriteDir = "textures/sprites/";
 			fontDir = "fonts/";
-			soundDir = "audio/sounds";
-			musicDir = "audio/music";
+			soundDir = "audio/sounds/";
+			musicDir = "audio/music/";
 		}
 		
 		Config(std::string texturePath, std::string spritePath, std::string fontPath, std::string soundPath, std::string musicPath)
@@ -122,8 +122,8 @@ namespace NoMEM
 		std::string textureDir = "../assets/textures/";
 		std::string spriteDir = "../assets/textures/sprites/";
 		std::string fontDir = "../assets/fonts/";
-		std::string soundDir = "../assets/audio/sounds";
-		std::string musicDir = "../assets/audio/music";
+		std::string soundDir = "../assets/audio/sounds/";
+		std::string musicDir = "../assets/audio/music/";
 		
 		bool has(const std::string& key)
 		{
