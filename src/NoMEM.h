@@ -40,19 +40,21 @@ namespace NoMEM
 	public:
 		Config() 
 			: wd(std::string(GetWorkingDirectory())) {}
+		
 		Config(std::string basePath)
-			: wd(std::string(GetWorkingDirectory()))
 		{
 			if ( basePath.back() != '/' )
 			{
 				basePath = basePath + "/";
 			}
+			wd = basePath;
 			textureDir = basePath + "textures/";
 			spriteDir = basePath + "textures/sprites/";
 			fontDir = basePath + "fonts/";
 			soundDir = basePath + "audio/sounds";
 			musicDir = basePath + "audio/music";
 		}
+		
 		Config(std::string texturePath, std::string spritePath, std::string fontPath, std::string soundPath, std::string musicPath)
 			: wd(std::string(GetWorkingDirectory()))
 		{
@@ -82,6 +84,41 @@ namespace NoMEM
 			soundDir = soundPath;
 			musicDir = musicPath;
 		}
+		
+		Config(std::string basePath, std::string texturePath, std::string spritePath, std::string fontPath, std::string soundPath, std::string musicPath)
+		{
+			if ( basePath.back() != '/' )
+			{
+				basePath = basePath + "/";
+			}
+			wd = basePath;
+			if ( texturePath.back() != '/' )
+			{
+				texturePath += "/";
+			}
+			if ( spritePath.back() != '/' )
+			{
+				spritePath += "/";
+			}
+			if ( fontPath.back() != '/' )
+			{
+				fontPath += "/";
+			}
+			if ( soundPath.back() != '/' )
+			{
+				soundPath += "/";
+			}
+			if ( musicPath.back() != '/' )
+			{
+				musicPath += "/";
+			}
+			textureDir = texturePath;
+			spriteDir = spritePath;
+			fontDir = fontPath;
+			soundDir = soundPath;
+			musicDir = musicPath;
+		}
+		
 		std::string textureDir = "../assets/textures/";
 		std::string spriteDir = "../assets/textures/sprites/";
 		std::string fontDir = "../assets/fonts/";
