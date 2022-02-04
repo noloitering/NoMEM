@@ -47,7 +47,15 @@ namespace NoMEM
 			{
 				basePath = basePath + "/";
 			}
-			wd = basePath;
+			if ( basePath.front() == '.' ) // ensure full path
+			{
+				std::cerr << "full path not given. Using current working directory instead" << std::endl;
+				wd = std::string(GetWorkingDirectory()) + "/" + basePath;
+			}
+			else
+			{
+				wd = basePath;
+			}
 			textureDir = "textures/";
 			spriteDir = "textures/sprites/";
 			fontDir = "fonts/";
@@ -91,7 +99,15 @@ namespace NoMEM
 			{
 				basePath = basePath + "/";
 			}
-			wd = basePath;
+			if ( basePath.front() == '.' ) // ensure full path
+			{
+				std::cerr << "full path not given. Using current working directory instead" << std::endl;
+				wd = std::string(GetWorkingDirectory()) + basePath;
+			}
+			else
+			{
+				wd = basePath;
+			}
 			if ( texturePath.back() != '/' )
 			{
 				texturePath += "/";
@@ -256,7 +272,7 @@ namespace NoMEM
 		
 		std::shared_ptr< Font > addFont(const std::string& name)
 		{
-			std::string path = conf.fontDir + name;
+			std::string path = conf.cwd() + conf.fontDir + name;
 			if ( FileExists(path.c_str()) )
 			{
 				
@@ -309,7 +325,7 @@ namespace NoMEM
 		
 		std::shared_ptr< Texture2D > addTexture(const std::string& name)
 		{
-			std::string path = conf.textureDir + name;
+			std::string path = conf.cwd() + conf.textureDir + name;
 			if ( FileExists(path.c_str()) )
 			{
 				
@@ -366,7 +382,7 @@ namespace NoMEM
 		
 		std::shared_ptr< Sprite > addSprite(const std::string& name, int frames = 1)
 		{
-			std::string path = conf.spriteDir + name;
+			std::string path = conf.cwd() + conf.spriteDir + name;
 			if ( FileExists(path.c_str()) )
 			{
 				
@@ -423,7 +439,7 @@ namespace NoMEM
 		
 		std::shared_ptr< Sound > addSound(const std::string& name)
 		{
-			std::string path = conf.soundDir + name;
+			std::string path = conf.cwd() + conf.soundDir + name;
 			// TODO: figure out what files to support
 			if ( FileExists(path.c_str()) )
 			{
@@ -477,7 +493,7 @@ namespace NoMEM
 		
 		std::shared_ptr< Music > addMusic(const std::string& name)
 		{
-			std::string path = conf.musicDir + name;
+			std::string path = conf.cwd() + conf.musicDir + name;
 			// TODO: figure out what files to support
 			if ( FileExists(path.c_str()) )
 			{
