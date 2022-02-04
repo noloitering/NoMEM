@@ -13,7 +13,9 @@ int main(int argc, char ** argv)
 	NoMEM::FontMap testMap = assets.getAll< Font >();
 	if ( testMap.size() != 2 )
 	{
-		std::cerr << "fonts not adding to map";
+		std::cerr << "fonts not adding to map" << std::endl;
+		std::cout << assets.conf.cwd() << std::endl;
+		std::cout << assets.conf.fontDir << std::endl;
 		
 		return 1;
 	}
