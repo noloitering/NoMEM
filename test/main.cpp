@@ -8,6 +8,7 @@ int main(int argc, char ** argv)
 	std::shared_ptr< Font > font = assets.addFont("jupiter_crash", "../fonts/jupiter_crash.png");
 	std::shared_ptr< Font > font2 = assets.addFont("alagard");
 	std::shared_ptr< Texture2D > mainImg = assets.addTexture("mainBack", "../imgs/space2.png");
+	std::shared_ptr< NoMEM::Sprite > sprite = assets.addSprite("sprite", "../imgs/sprite.png", 8);
 	std::shared_ptr< Sound > sound = assets.addSound("dontknow", "../audio/sound.mp3");
 	std::shared_ptr< Music > song = assets.addMusic("sunshine", "../audio/music.wav");
 	NoMEM::FontMap testMap = assets.getAll< Font >();
@@ -49,6 +50,7 @@ int main(int argc, char ** argv)
 		ClearBackground(RAYWHITE);
 		BeginDrawing();
 			DrawTexture(*(assets.get< Texture2D >("mainBack")), 0, 0, WHITE);
+			DrawTexture(*(assets.get< NoMEM::Sprite >("sprite")->texture), 0, 0, WHITE);
 		EndDrawing();
 	}
 	std::cout << assets.conf.cwd() << std::endl;
