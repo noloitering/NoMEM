@@ -11,7 +11,7 @@ namespace NoMEM
 {
 	struct Sprite
 	{
-		Texture2D texture;
+		std::shared_ptr< Texture2D > texture;
 		int frames;
 	};
 
@@ -364,7 +364,8 @@ namespace NoMEM
 		{
 			if ( FileExists(path.c_str()) )
 			{
-				std::shared_ptr< Sprite > newSprite = std::make_shared< Sprite >((Sprite){LoadTexture(path.c_str()), frames});
+				std::shared_ptr< Texture2D > spriteTex = std::make_shared< Texture2D >(LoadTexture(path.c_str()));
+				std::shared_ptr< Sprite > newSprite = std::make_shared< Sprite >((Sprite){spriteTex, frames});
 				SpriteMap spriteMap = getAll< Sprite >();
 				spriteMap[name] = newSprite;
 				assets = std::make_tuple(getAll< Font >(), getAll< Texture2D >(), getAll< Anim >(), spriteMap, getAll< Sound >(), getAll< Music >());
@@ -409,7 +410,8 @@ namespace NoMEM
 				
 				return nullptr;
 			}
-			std::shared_ptr< Sprite > newSprite = std::make_shared< Sprite >((Sprite){LoadTexture(path.c_str()), frames});
+			std::shared_ptr< Texture2D > spriteTex = std::make_shared< Texture2D >(LoadTexture(path.c_str()));
+			std::shared_ptr< Sprite > newSprite = std::make_shared< Sprite >((Sprite){spriteTex, frames});
 			SpriteMap spriteMap = getAll< Sprite >();
 			spriteMap[name] = newSprite;
 			assets = std::make_tuple(getAll< Font >(), getAll< Texture2D >(), getAll< Anim >(), spriteMap, getAll< Sound >(), getAll< Music >());
@@ -544,7 +546,7 @@ namespace NoMEM
 			}
 			for (auto sprite : spriteMap)
 			{
-				UnloadTexture(sprite.second->texture);
+				UnloadTexture(*(sprite.second->texture));
 			}
 			for (auto sound : soundMap)
 			{
