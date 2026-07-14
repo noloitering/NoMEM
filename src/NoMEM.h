@@ -29,7 +29,8 @@ namespace NoMEM
 	typedef std::unordered_map< std::string, std::shared_ptr< Sprite > > SpriteMap;
 	typedef std::unordered_map< std::string, std::shared_ptr< Sound > > SoundMap;
 	typedef std::unordered_map< std::string, std::shared_ptr< Music > > MusicMap;
-	typedef std::tuple< FontMap, TextureMap, AnimMap, SpriteMap, SoundMap, MusicMap > Assets;
+	typedef std::unordered_map< std::string, std::shared_ptr< Model > > ModelMap;
+	typedef std::tuple< FontMap, TextureMap, AnimMap, SpriteMap, SoundMap, MusicMap, ModelMap > Assets;
 	
 	class Config // keeps track of files
 	{
@@ -61,9 +62,10 @@ namespace NoMEM
 			fontDir = "fonts/";
 			soundDir = "audio/sounds/";
 			musicDir = "audio/music/";
+			modelDir = "models/";
 		}
 		
-		Config(std::string texturePath, std::string spritePath, std::string fontPath, std::string soundPath, std::string musicPath)
+		Config(std::string texturePath, std::string spritePath, std::string fontPath, std::string soundPath, std::string musicPath, std::string modelPath)
 			: wd(std::string(GetWorkingDirectory()))
 		{
 			if ( texturePath.back() != '/' )
@@ -91,9 +93,10 @@ namespace NoMEM
 			fontDir = fontPath;
 			soundDir = soundPath;
 			musicDir = musicPath;
+			modelDir = modelPath;
 		}
 		
-		Config(std::string basePath, std::string texturePath, std::string spritePath, std::string fontPath, std::string soundPath, std::string musicPath)
+		Config(std::string basePath, std::string texturePath, std::string spritePath, std::string fontPath, std::string soundPath, std::string musicPath, std::string modelPath)
 		{
 			if ( basePath.back() != '/' )
 			{
@@ -133,6 +136,7 @@ namespace NoMEM
 			fontDir = fontPath;
 			soundDir = soundPath;
 			musicDir = musicPath;
+			modelDir = modelPath;
 		}
 		
 		std::string textureDir = "../assets/textures/";
@@ -140,6 +144,7 @@ namespace NoMEM
 		std::string fontDir = "../assets/fonts/";
 		std::string soundDir = "../assets/audio/sounds/";
 		std::string musicDir = "../assets/audio/music/";
+		std::string modelDir = "../assets/models/";
 		
 		bool has(const std::string& key)
 		{
@@ -196,16 +201,16 @@ namespace NoMEM
 		MEMManager() {}
 		MEMManager(const Assets& a)
 			: assets(a) {}
-		MEMManager(const Assets& a, std::string texturePath, std::string spritePath, std::string fontPath, std::string soundPath, std::string musicPath)
-			: assets(a), conf(Config(texturePath, spritePath, fontPath, soundPath, musicPath)) {}
+		MEMManager(const Assets& a, std::string texturePath, std::string spritePath, std::string fontPath, std::string soundPath, std::string musicPath, std::string modelPath)
+			: assets(a), conf(Config(texturePath, spritePath, fontPath, soundPath, musicPath, modelPath)) {}
 		MEMManager(const Assets& a, const Config& config)
 			: assets(a), conf(config) {}
 		MEMManager(const Config& config)
 			: conf(config) {}
 		MEMManager(std::string confPath)
 			: conf(Config(confPath)) {}
-		MEMManager(std::string texturePath, std::string spritePath, std::string fontPath, std::string soundPath, std::string musicPath)
-			: conf(Config(texturePath, spritePath, fontPath, soundPath, musicPath)) {}
+		MEMManager(std::string texturePath, std::string spritePath, std::string fontPath, std::string soundPath, std::string musicPath, std::string modelPath)
+			: conf(Config(texturePath, spritePath, fontPath, soundPath, musicPath, modelPath)) {}
 		
 		Config conf;
 		
@@ -244,7 +249,7 @@ namespace NoMEM
 			std::shared_ptr< Anim > newAnim = std::make_shared< Anim >(anim);
 			AnimMap animMap = getAll< Anim >();
 			animMap[name] = newAnim;
-			assets = std::make_tuple(getAll< Font >(), getAll< Texture2D >(), animMap, getAll< Sprite >(), getAll< Sound >(), getAll< Music >());
+			assets = std::make_tuple(getAll< Font >(), getAll< Texture2D >(), animMap, getAll< Sprite >(), getAll< Sound >(), getAll< Music >(), getAll< Model >());
 			
 			
 			return newAnim;
@@ -257,7 +262,7 @@ namespace NoMEM
 				std::shared_ptr< Font > newFont = std::make_shared< Font >(LoadFont(path.c_str()));
 				FontMap fontMap = getAll< Font >();
 				fontMap[name] = newFont;
-				assets = std::make_tuple(fontMap, getAll< Texture2D >(), getAll< Anim >(), getAll< Sprite >(), getAll< Sound >(), getAll< Music >());
+				assets = std::make_tuple(fontMap, getAll< Texture2D >(), getAll< Anim >(), getAll< Sprite >(), getAll< Sound >(), getAll< Music >(), getAll< Model >());
 				conf.custom[name] = path;
 				
 				return newFont;
@@ -298,7 +303,7 @@ namespace NoMEM
 			std::shared_ptr< Font > newFont = std::make_shared< Font >(LoadFont(path.c_str()));
 			FontMap fontMap = getAll< Font >();
 			fontMap[name] = newFont;
-			assets = std::make_tuple(fontMap, getAll< Texture2D >(), getAll< Anim >(), getAll< Sprite >(), getAll< Sound >(), getAll< Music >());
+			assets = std::make_tuple(fontMap, getAll< Texture2D >(), getAll< Anim >(), getAll< Sprite >(), getAll< Sound >(), getAll< Music >(), getAll< Model >());
 				
 			return newFont;
 		}
@@ -310,7 +315,7 @@ namespace NoMEM
 				std::shared_ptr< Texture2D > newTexture = std::make_shared< Texture2D >(LoadTexture(path.c_str()));
 				TextureMap textureMap = getAll< Texture2D >();
 				textureMap[name] = newTexture;
-				assets = std::make_tuple(getAll< Font >(), textureMap, getAll< Anim >(), getAll< Sprite >(), getAll< Sound >(), getAll< Music >());
+				assets = std::make_tuple(getAll< Font >(), textureMap, getAll< Anim >(), getAll< Sprite >(), getAll< Sound >(), getAll< Music >(), getAll< Model >());
 				conf.custom[name] = path;
 				
 				return newTexture;
@@ -355,7 +360,7 @@ namespace NoMEM
 			std::shared_ptr< Texture2D > newTexture = std::make_shared< Texture2D >(LoadTexture(path.c_str()));
 			TextureMap textureMap = getAll< Texture2D >();
 			textureMap[name] = newTexture;
-			assets = std::make_tuple(getAll< Font >(), textureMap, getAll< Anim >(), getAll< Sprite >(), getAll< Sound >(), getAll< Music >());
+			assets = std::make_tuple(getAll< Font >(), textureMap, getAll< Anim >(), getAll< Sprite >(), getAll< Sound >(), getAll< Music >(), getAll< Model >());
 				
 			return newTexture;
 		}
@@ -368,7 +373,7 @@ namespace NoMEM
 				std::shared_ptr< Sprite > newSprite = std::make_shared< Sprite >((Sprite){spriteTex, frames});
 				SpriteMap spriteMap = getAll< Sprite >();
 				spriteMap[name] = newSprite;
-				assets = std::make_tuple(getAll< Font >(), getAll< Texture2D >(), getAll< Anim >(), spriteMap, getAll< Sound >(), getAll< Music >());
+				assets = std::make_tuple(getAll< Font >(), getAll< Texture2D >(), getAll< Anim >(), spriteMap, getAll< Sound >(), getAll< Music >(), getAll< Model >());
 				conf.custom[name] = path;
 				
 				return newSprite;
@@ -414,7 +419,7 @@ namespace NoMEM
 			std::shared_ptr< Sprite > newSprite = std::make_shared< Sprite >((Sprite){spriteTex, frames});
 			SpriteMap spriteMap = getAll< Sprite >();
 			spriteMap[name] = newSprite;
-			assets = std::make_tuple(getAll< Font >(), getAll< Texture2D >(), getAll< Anim >(), spriteMap, getAll< Sound >(), getAll< Music >());
+			assets = std::make_tuple(getAll< Font >(), getAll< Texture2D >(), getAll< Anim >(), spriteMap, getAll< Sound >(), getAll< Music >(), getAll< Model >());
 				
 			return newSprite;
 		}
@@ -426,7 +431,7 @@ namespace NoMEM
 				std::shared_ptr< Sound > newSound = std::make_shared< Sound >(LoadSound(path.c_str()));
 				SoundMap soundMap = getAll< Sound >();
 				soundMap[name] = newSound;
-				assets = std::make_tuple(getAll< Font >(), getAll< Texture2D >(), getAll< Anim >(), getAll< Sprite >(), soundMap, getAll< Music >());
+				assets = std::make_tuple(getAll< Font >(), getAll< Texture2D >(), getAll< Anim >(), getAll< Sprite >(), soundMap, getAll< Music >(), getAll< Model >());
 				conf.custom[name] = path;
 				
 				return newSound;
@@ -468,7 +473,7 @@ namespace NoMEM
 			std::shared_ptr< Sound > newSound = std::make_shared< Sound >(LoadSound(path.c_str()));
 			SoundMap soundMap = getAll< Sound >();
 			soundMap[name] = newSound;
-			assets = std::make_tuple(getAll< Font >(), getAll< Texture2D >(), getAll< Anim >(), getAll< Sprite >(), soundMap, getAll< Music >());
+			assets = std::make_tuple(getAll< Font >(), getAll< Texture2D >(), getAll< Anim >(), getAll< Sprite >(), soundMap, getAll< Music >(), getAll< Model >());
 				
 			return newSound;
 		}
@@ -480,7 +485,7 @@ namespace NoMEM
 				std::shared_ptr< Music > newMusic = std::make_shared< Music >(LoadMusicStream(path.c_str()));
 				MusicMap musicMap = getAll< Music >();
 				musicMap[name] = newMusic;
-				assets = std::make_tuple(getAll< Font >(), getAll< Texture2D >(), getAll< Anim >(), getAll< Sprite >(), getAll< Sound >(), musicMap);
+				assets = std::make_tuple(getAll< Font >(), getAll< Texture2D >(), getAll< Anim >(), getAll< Sprite >(), getAll< Sound >(), musicMap, getAll< Model >());
 				conf.custom[name] = path;
 				
 				return newMusic;
@@ -522,9 +527,75 @@ namespace NoMEM
 			std::shared_ptr< Music > newMusic = std::make_shared< Music >(LoadMusicStream(path.c_str()));
 			MusicMap musicMap = getAll< Music >();
 			musicMap[name] = newMusic;
-			assets = std::make_tuple(getAll< Font >(), getAll< Texture2D >(), getAll< Anim >(), getAll< Sprite >(), getAll< Sound >(), musicMap);
+			assets = std::make_tuple(getAll< Font >(), getAll< Texture2D >(), getAll< Anim >(), getAll< Sprite >(), getAll< Sound >(), musicMap, getAll< Model >());
 				
 			return newMusic;
+		}
+		
+		std::shared_ptr< Model > addModel(const std::string& name, const std::string& path)
+		{
+			if ( FileExists(path.c_str()) )
+			{
+				std::shared_ptr< Model > newModel = std::make_shared< Model >(LoadModel(path.c_str()));
+				ModelMap modelMap = getAll< Model >();
+				modelMap[name] = newModel;
+				assets = std::make_tuple(getAll< Font >(), getAll< Texture2D >(), getAll< Anim >(), getAll< Sprite >(), getAll< Sound >(), getAll< Music >(), modelMap);
+				conf.custom[name] = path;
+				
+				return newModel;
+			}
+			else
+			{
+				std::cerr << "could not load model: " << path << std::endl;
+			}
+			
+			return nullptr;
+		}
+		
+		std::shared_ptr< Model > addModel(const std::string& name)
+		{
+			std::string path = conf.cwd() + conf.modelDir + name;
+			// TODO: figure out what files to support
+			if ( FileExists(path.c_str()) )
+			{
+				
+			}
+			else if ( FileExists(((path + ".obj").c_str())) )
+			{
+				path += ".obj";
+			}
+			else if ( FileExists(((path + ".gltf").c_str())) )
+			{
+				path += ".gltf";
+			}
+			else if ( FileExists(((path + ".glb").c_str())) )
+			{
+				path += ".glb";
+			}
+			else if ( FileExists(((path + ".vox").c_str())) )
+			{
+				path += ".vox";
+			}
+			else if ( FileExists(((path + ".iqm").c_str())) )
+			{
+				path += ".iqm";
+			}
+			else if ( FileExists(((path + ".m3d").c_str())) )
+			{
+				path += ".m3d";
+			}
+			else
+			{
+				std::cerr << "could not load model: " << path << std::endl;
+				
+				return nullptr;
+			}
+			std::shared_ptr< Model > newModel = std::make_shared< Model >(LoadModel(path.c_str()));
+			ModelMap modelMap = getAll< Model >();
+			modelMap[name] = newModel;
+			assets = std::make_tuple(getAll< Font >(), getAll< Texture2D >(), getAll< Anim >(), getAll< Sprite >(), getAll< Sound >(), getAll< Music >(), modelMap);
+				
+			return newModel;
 		}
 		
 		void clear()
@@ -535,6 +606,7 @@ namespace NoMEM
 			SpriteMap& spriteMap = std::get< SpriteMap >(assets);
 			SoundMap& soundMap = std::get< SoundMap >(assets);
 			MusicMap& musicMap = std::get< MusicMap >(assets);
+			ModelMap& modelMap = std::get< ModelMap >(assets);
 			
 			for (auto font : fontMap)
 			{
@@ -556,11 +628,16 @@ namespace NoMEM
 			{
 				UnloadMusicStream(*(music.second));
 			}
+			for (auto model : modelMap)
+			{
+				UnloadModel(*(model.second));
+			}
 			fontMap.clear();
 			textureMap.clear();
 			animMap.clear();
 			spriteMap.clear();
 			musicMap.clear();
+			modelMap.clear();
 		}
 	};
 }
